@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Fraud Detection System
 
-## Getting Started
+A real-time behavioral analytics platform for banking security using Next.js, Firebase, and advanced behavioral monitoring.
 
-First, run the development server:
+## 🚀 Features
+
+- **User Registration** - Secure user onboarding with personal and banking information
+- **Behavioral Profiling** - Advanced analytics for user behavior patterns
+- **Real-time Monitoring** - Live session tracking from mobile devices
+- **Firebase Integration** - Scalable cloud database with real-time updates
+- **Modern UI** - Responsive design with Tailwind CSS and shadcn/ui
+
+## 🏗️ Architecture
+
+### Database Collections
+- `users` - User registration data
+- `userBehavioralProfiles` - Behavioral analysis profiles
+- `behavioralSessions` - Individual session data from mobile devices
+
+### Tech Stack
+- **Frontend**: Next.js 15, React, TypeScript
+- **Styling**: Tailwind CSS, shadcn/ui
+- **Database**: Firebase Firestore
+- **State Management**: Zustand
+- **Validation**: Zod
+
+## 📱 Key Pages
+
+- `/` - Dashboard with system overview
+- `/register` - User registration form
+- `/create-profile` - Behavioral profile creation
+- `/monitoring` - Real-time user monitoring
+- `/sessions` - Behavioral session management
+
+## 🔧 Getting Started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3001](http://localhost:3001) to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🎯 Behavioral Analytics
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The system tracks:
+- Touch patterns (taps, swipes, pressure)
+- Typing behavior (speed, accuracy)
+- Login patterns and authentication
+- Location and network data
+- Device information and security status
 
-## Learn More
+## 🔒 Security Features
 
-To learn more about Next.js, take a look at the following resources:
+- Real-time fraud detection
+- Behavioral anomaly detection
+- Secure data storage with Firebase
+- Mobile device integration ready
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+*Built for advanced banking security and fraud prevention*
