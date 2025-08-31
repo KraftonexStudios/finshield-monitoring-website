@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Plus } from "lucide-react";
+import { ArrowLeft, Plus, Brain, Zap } from "lucide-react";
 import Link from "next/link";
 import { addUserBehavioralProfile } from "@/services/firebase";
 import { useStore } from "@/store/useStore";
@@ -206,65 +206,113 @@ export default function CreateProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-6">
-          <Link href="/" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800">
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-8 max-w-3xl">
+        <div className="mb-8">
+          <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="h-4 w-4" />
             Back to Home
           </Link>
         </div>
 
-        <Card className="max-w-2xl mx-auto">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Plus className="h-6 w-6 text-blue-600" />
-              Create Sample Behavioral Profile
-            </CardTitle>
-            <CardDescription>
-              Generate a sample behavioral profile for testing the monitoring dashboard.
-              In production, these profiles would be automatically created from mobile app data.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <Label htmlFor="userId">User ID</Label>
-                <Input
-                  id="userId"
-                  value={userId}
-                  onChange={(e) => setUserId(e.target.value)}
-                  placeholder="Enter user ID (e.g., user_001)"
-                  required
-                />
-                <p className="text-sm text-gray-600 mt-1">
-                  This should match a user ID from the registered users
-                </p>
-              </div>
+        <div className="space-y-8">
+          <div className="text-center space-y-2">
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+              <Brain className="h-8 w-8 text-primary" />
+            </div>
+            <h1 className="text-3xl font-bold tracking-tight">Create Behavioral Profile</h1>
+            <p className="text-muted-foreground max-w-lg mx-auto">
+              Generate a comprehensive behavioral profile for fraud detection testing and analysis
+            </p>
+          </div>
 
-              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">What will be generated:</h4>
-                <ul className="text-sm space-y-1 text-gray-600 dark:text-gray-400">
-                  <li>• Touch behavior patterns (pressure, timing, gestures)</li>
-                  <li>• Typing patterns (speed, accuracy, mobile features)</li>
-                  <li>• Login behavior (timing, authentication preferences)</li>
-                  <li>• Location and network patterns</li>
-                  <li>• Device usage statistics</li>
-                  <li>• Risk assessment scores</li>
-                </ul>
-              </div>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Plus className="h-5 w-5 text-primary" />
+                Profile Generation
+              </CardTitle>
+              <CardDescription>
+                This will create a sample behavioral profile with realistic patterns for testing the monitoring dashboard.
+                In production, these profiles are automatically generated from mobile app interactions.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="userId" className="text-sm font-medium">User ID</Label>
+                  <Input
+                    id="userId"
+                    value={userId}
+                    onChange={(e) => setUserId(e.target.value)}
+                    placeholder="Enter user ID (e.g., user_001)"
+                    required
+                    className="h-11"
+                  />
+                  <p className="text-sm text-muted-foreground">
+                    This should match a user ID from the registered users
+                  </p>
+                </div>
 
-              <div className="flex gap-4">
-                <Button type="submit" disabled={isSubmitting} className="flex-1">
-                  {isSubmitting ? "Creating Profile..." : "Create Sample Profile"}
-                </Button>
-                <Button type="button" variant="outline" onClick={() => router.push("/")}>
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
+                <div className="bg-muted/50 border border-border/50 p-6 rounded-lg space-y-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Zap className="h-5 w-5 text-primary" />
+                    <h4 className="font-semibold">Generated Profile Components</h4>
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-4 text-sm">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-primary" />
+                        <span>Touch behavior patterns</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-primary" />
+                        <span>Typing speed & accuracy</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-primary" />
+                        <span>Login behavior analysis</span>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-primary" />
+                        <span>Location & network patterns</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-primary" />
+                        <span>Device usage statistics</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-primary" />
+                        <span>Risk assessment scores</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                  <Button type="submit" disabled={isSubmitting} className="flex-1 h-12">
+                    {isSubmitting ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                        Creating Profile...
+                      </>
+                    ) : (
+                      <>
+                        <Plus className="w-4 h-4 mr-2" />
+                        Create Sample Profile
+                      </>
+                    )}
+                  </Button>
+                  <Button type="button" variant="outline" onClick={() => router.push("/")} className="h-12">
+                    Cancel
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

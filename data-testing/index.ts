@@ -28,6 +28,40 @@ export interface MobileKeystroke {
   y: number; // touch coordinate
 }
 
+export interface MobileMotionEvents {
+  timestamp: number;
+
+  // Sensor readings
+  accelerometer: {
+    x: number;
+    y: number;
+    z: number;
+  };
+
+  gyroscope: {
+    x: number;
+    y: number;
+    z: number;
+  };
+
+  magnetometer: {
+    x: number;
+    y: number;
+    z: number;
+  };
+
+  // Optional derived motion metrics
+  motionMagnitude?: number;
+  rotationRate?: number;
+  orientationChange?: number;
+}
+
+export interface MotionPattern {
+  samples: MobileMotionEvents[];
+  duration: number;
+  sampleRateHz: number;
+}
+
 // ________________________________________
 export interface TouchGesture {
   sessionId: string;
@@ -417,10 +451,8 @@ export interface BehavioralSession {
 
   touchPatterns: TouchGesture[];
   typingPatterns: TypingPattern[];
+  motionPattern: MotionPattern[];
   loginBehavior: LoginBehavior;
-  locationBehavior: LocationBehavior;
-  networkBehavior: NetworkBehavior;
-  deviceBehavior: DeviceBehavior;
 }
 
 // User Related Field
@@ -460,4 +492,21 @@ export interface User {
 export interface RecoveryQuestion {
   question: string;
   answerHash: string;
+}
+
+export interface Transaction {
+  id: string;
+  amount: number;
+  category: string;
+  createdAt: string; // ISO timestamp
+  description: string;
+  fromMobile: string;
+  fromUserId: string;
+  note: string;
+  reference: string;
+  status: "pending" | "completed" | "failed" | "cancelled";
+  toMobile: string;
+  toUserId: string;
+  type: "credit" | "debit";
+  updatedAt: string; // ISO timestamp
 }

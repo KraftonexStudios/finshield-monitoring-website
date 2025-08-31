@@ -127,9 +127,6 @@ export interface BehavioralSession {
   // Aggregated behavioral data
   touchPatterns: TouchGesture[]; // Combination of native data + calculations
   typingPatterns: TypingPattern[]; // Combination of native data + calculations
-  mousePatterns: MotionPattern[]; // Combination of native data + calculations
+  motionPattern: MotionPattern[]; // Combination of native data + calculations
   loginBehavior: LoginBehavior; // Combination of native data + calculations
-  locationBehavior: LocationBehavior; // Combination of native data + calculations
-  networkBehavior: NetworkBehavior; // Combination of native data + calculations
-  deviceBehavior: DeviceBehavior; // Combination of native data + calculations
 }

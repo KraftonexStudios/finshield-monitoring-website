@@ -10,7 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, UserPlus } from "lucide-react";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { ArrowLeft, UserPlus, User, CreditCard } from "lucide-react";
 import Link from "next/link";
 import { addUser } from "@/services/firebase";
 import { useStore } from "@/store/useStore";
@@ -21,13 +22,13 @@ const userSchema = z.object({
   fullName: z.string().min(2, "Name must be at least 2 characters"),
   emailId: z.string().email("Invalid email address"),
   age: z.number().min(18, "Age must be at least 18").max(100, "Age must be less than 100"),
-  gender: z.enum(["male", "female"], { required_error: "Please select gender" }),
+  gender: z.enum(["male", "female"]),
   profile: z.string().optional(),
   bankName: z.string().min(2, "Bank name is required"),
   accountNumber: z.string().min(8, "Account number must be at least 8 digits"),
   ifscCode: z.string().min(11, "IFSC code must be 11 characters").max(11, "IFSC code must be 11 characters"),
   branchName: z.string().min(2, "Branch name is required"),
-  accountType: z.enum(["savings", "current"], { required_error: "Please select account type" }),
+  accountType: z.enum(["savings", "current"]),
   balance: z.number().min(0, "Balance cannot be negative"),
 });
 
@@ -38,14 +39,22 @@ export default function RegisterPage() {
   const router = useRouter();
   const { addUser: addUserToStore } = useStore();
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm<UserFormData>({
+  const form = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
+    defaultValues: {
+      fullName: "",
+      mobile: "",
+      emailId: "",
+      age: 18,
+      gender: undefined,
+      profile: "",
+      bankName: "",
+      accountNumber: "",
+      ifscCode: "",
+      branchName: "",
+      accountType: undefined,
+      balance: 0,
+    },
   });
 
   const onSubmit = async (data: UserFormData) => {
@@ -78,199 +87,262 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-6">
-          <Link href="/" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800">
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <div className="mb-8">
+          <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="h-4 w-4" />
             Back to Home
           </Link>
         </div>
 
-        <Card className="max-w-4xl mx-auto">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <UserPlus className="h-6 w-6 text-blue-600" />
-              User Registration
-            </CardTitle>
-            <CardDescription>
-              Register a new user with their personal and banking information
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <div className="space-y-8">
+          <div className="text-center space-y-2">
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+              <UserPlus className="h-8 w-8 text-primary" />
+            </div>
+            <h1 className="text-3xl font-bold tracking-tight">User Registration</h1>
+            <p className="text-muted-foreground max-w-md mx-auto">
+              Create a new user account with personal and banking information for fraud detection analysis
+            </p>
+          </div>
+
+          <Form {...form}>
+             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               {/* Personal Information */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold">Personal Information</h3>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="fullName">Full Name</Label>
-                    <Input
-                      id="fullName"
-                      {...register("fullName")}
-                      placeholder="Enter full name"
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <User className="h-5 w-5 text-primary" />
+                    Personal Information
+                  </CardTitle>
+                  <CardDescription>
+                    Basic personal details for user identification
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="fullName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Full Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter full name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                    {errors.fullName && (
-                      <p className="text-sm text-red-600">{errors.fullName.message}</p>
-                    )}
-                  </div>
-                  <div>
-                    <Label htmlFor="mobile">Mobile Number</Label>
-                    <Input
-                      id="mobile"
-                      {...register("mobile")}
-                      placeholder="+919876543210"
+                    <FormField
+                      control={form.control}
+                      name="mobile"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Mobile Number</FormLabel>
+                          <FormControl>
+                            <Input placeholder="+919876543210" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                    {errors.mobile && (
-                      <p className="text-sm text-red-600">{errors.mobile.message}</p>
-                    )}
-                  </div>
-                  <div>
-                    <Label htmlFor="emailId">Email Address</Label>
-                    <Input
-                      id="emailId"
-                      type="email"
-                      {...register("emailId")}
-                      placeholder="Enter email address"
+                    <FormField
+                      control={form.control}
+                      name="emailId"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email Address</FormLabel>
+                          <FormControl>
+                            <Input type="email" placeholder="Enter email address" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                    {errors.emailId && (
-                      <p className="text-sm text-red-600">{errors.emailId.message}</p>
-                    )}
-                  </div>
-                  <div>
-                    <Label htmlFor="age">Age</Label>
-                    <Input
-                      id="age"
-                      type="number"
-                      {...register("age", { valueAsNumber: true })}
-                      placeholder="Enter age"
+                    <FormField
+                      control={form.control}
+                      name="age"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Age</FormLabel>
+                          <FormControl>
+                            <Input type="number" placeholder="Enter age" {...field} onChange={(e) => field.onChange(Number(e.target.value))} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                    {errors.age && (
-                      <p className="text-sm text-red-600">{errors.age.message}</p>
-                    )}
+                    <FormField
+                      control={form.control}
+                      name="gender"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Gender</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select gender" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="male">Male</SelectItem>
+                              <SelectItem value="female">Female</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
-                  <div>
-                    <Label htmlFor="gender">Gender</Label>
-                    <Select onValueChange={(value) => setValue("gender", value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select gender" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="male">Male</SelectItem>
-                        <SelectItem value="female">Female</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {errors.gender && (
-                      <p className="text-sm text-red-600">{errors.gender.message}</p>
+                  <FormField
+                    control={form.control}
+                    name="profile"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Profile Image URL (Optional)</FormLabel>
+                        <FormControl>
+                          <Input placeholder="https://example.com/profile.jpg" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
                     )}
-                  </div>
-                </div>
-                <div>
-                  <Label htmlFor="profile">Profile Image URL (Optional)</Label>
-                  <Input
-                    id="profile"
-                    {...register("profile")}
-                    placeholder="https://example.com/profile.jpg"
                   />
-                  {errors.profile && (
-                    <p className="text-sm text-red-600">{errors.profile.message}</p>
-                  )}
-                </div>
-              </div>
+                </CardContent>
+              </Card>
 
               {/* Banking Information */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold">Banking Information</h3>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="bankName">Bank Name</Label>
-                    <Input
-                      id="bankName"
-                      {...register("bankName")}
-                      placeholder="Enter bank name"
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <CreditCard className="h-5 w-5 text-primary" />
+                    Banking Information
+                  </CardTitle>
+                  <CardDescription>
+                    Financial account details for transaction monitoring
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="bankName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Bank Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter bank name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                    {errors.bankName && (
-                      <p className="text-sm text-red-600">{errors.bankName.message}</p>
-                    )}
-                  </div>
-                  <div>
-                    <Label htmlFor="accountNumber">Account Number</Label>
-                    <Input
-                      id="accountNumber"
-                      {...register("accountNumber")}
-                      placeholder="Enter account number"
+                    <FormField
+                      control={form.control}
+                      name="accountNumber"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Account Number</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter account number" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                    {errors.accountNumber && (
-                      <p className="text-sm text-red-600">{errors.accountNumber.message}</p>
-                    )}
-                  </div>
-                  <div>
-                    <Label htmlFor="ifscCode">IFSC Code</Label>
-                    <Input
-                      id="ifscCode"
-                      {...register("ifscCode")}
-                      placeholder="Enter IFSC code"
-                      maxLength={11}
+                    <FormField
+                      control={form.control}
+                      name="ifscCode"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>IFSC Code</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter IFSC code" maxLength={11} {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                    {errors.ifscCode && (
-                      <p className="text-sm text-red-600">{errors.ifscCode.message}</p>
-                    )}
-                  </div>
-                  <div>
-                    <Label htmlFor="branchName">Branch Name</Label>
-                    <Input
-                      id="branchName"
-                      {...register("branchName")}
-                      placeholder="Enter branch name"
+                    <FormField
+                      control={form.control}
+                      name="branchName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Branch Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter branch name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                    {errors.branchName && (
-                      <p className="text-sm text-red-600">{errors.branchName.message}</p>
-                    )}
-                  </div>
-                  <div>
-                    <Label htmlFor="accountType">Account Type</Label>
-                    <Select onValueChange={(value) => setValue("accountType", value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select account type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="savings">Savings</SelectItem>
-                        <SelectItem value="current">Current</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {errors.accountType && (
-                      <p className="text-sm text-red-600">{errors.accountType.message}</p>
-                    )}
-                  </div>
-                  <div>
-                    <Label htmlFor="balance">Account Balance</Label>
-                    <Input
-                      id="balance"
-                      type="number"
-                      step="0.01"
-                      {...register("balance", { valueAsNumber: true })}
-                      placeholder="Enter account balance"
+                    <FormField
+                      control={form.control}
+                      name="accountType"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Account Type</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select account type" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="savings">Savings Account</SelectItem>
+                              <SelectItem value="current">Current Account</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                    {errors.balance && (
-                      <p className="text-sm text-red-600">{errors.balance.message}</p>
-                    )}
+                    <FormField
+                      control={form.control}
+                      name="balance"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Account Balance</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="number" 
+                              step="0.01" 
+                              placeholder="Enter account balance" 
+                              {...field} 
+                              onChange={(e) => field.onChange(Number(e.target.value))}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
 
-
-
-              <div className="flex gap-4">
-                <Button type="submit" disabled={isSubmitting} className="flex-1">
-                  {isSubmitting ? "Registering..." : "Register User"}
+              {/* Form Actions */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-6">
+                <Button type="submit" disabled={isSubmitting} className="flex-1 h-12">
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                      Creating Account...
+                    </>
+                  ) : (
+                    <>
+                      <UserPlus className="w-4 h-4 mr-2" />
+                      Register User
+                    </>
+                  )}
                 </Button>
-                <Button type="button" variant="outline" onClick={() => router.push("/")}>
+                <Button type="button" variant="outline" onClick={() => router.push("/")} className="h-12">
                   Cancel
                 </Button>
               </div>
             </form>
-          </CardContent>
-        </Card>
+          </Form>
+        </div>
       </div>
     </div>
   );

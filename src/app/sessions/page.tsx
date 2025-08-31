@@ -39,130 +39,116 @@ export default function SessionsPage() {
         timestamp: Date.now(),
         touchPatterns: [
           {
-            gestureType: "tap",
-            startTime: Date.now() - 1000,
-            endTime: Date.now(),
-            pressure: 0.6 + Math.random() * 0.3,
-            touchArea: 15 + Math.random() * 10,
-            coordinates: [
-              { x: 150 + Math.random() * 50, y: 300 + Math.random() * 50, timestamp: Date.now() - 500 }
+            sessionId: `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+            userId: userId.trim(),
+            touches: [
+              {
+                gestureType: "tap",
+                timestamp: Date.now() - 1000,
+                startX: 150 + Math.random() * 50,
+                startY: 300 + Math.random() * 50,
+                endX: 150 + Math.random() * 50,
+                endY: 300 + Math.random() * 50,
+                duration: 100 + Math.random() * 50,
+                pressure: 0.6 + Math.random() * 0.3,
+                touchArea: 15 + Math.random() * 10,
+                distance: 0,
+                velocity: 0
+              }
             ],
-            velocity: 0,
-            acceleration: 0,
+            avgPressure: 0.6 + Math.random() * 0.3,
+            pressureConsistency: 0.8 + Math.random() * 0.2,
+            avgTouchArea: 15 + Math.random() * 10,
+            areaConsistency: 0.7 + Math.random() * 0.3,
+            avgGestureDuration: 100 + Math.random() * 50,
+            timingVariation: 0.2 + Math.random() * 0.3,
+            avgSwipeVelocity: 0,
+            swipeAccuracy: 0.9 + Math.random() * 0.1,
             hesitationCount: Math.floor(Math.random() * 3),
-            isRapidTouch: Math.random() > 0.8
-          },
-          {
-            gestureType: "swipe",
-            startTime: Date.now() - 2000,
-            endTime: Date.now() - 1500,
-            pressure: 0.5 + Math.random() * 0.4,
-            touchArea: 20 + Math.random() * 15,
-            coordinates: [
-              { x: 100, y: 400, timestamp: Date.now() - 2000 },
-              { x: 200, y: 400, timestamp: Date.now() - 1800 },
-              { x: 300, y: 400, timestamp: Date.now() - 1500 }
-            ],
-            velocity: 150 + Math.random() * 100,
-            acceleration: 50 + Math.random() * 30,
-            hesitationCount: 0,
-            isRapidTouch: false
+            rapidTouchCount: Math.floor(Math.random() * 2),
+            totalGestures: 1,
+            sessionDuration: 1000 + Math.random() * 2000,
+            timestamp: Date.now(),
+            riskScore: Math.random() * 0.3
           }
         ],
         typingPatterns: [
           {
+            sessionId: `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+            userId: userId.trim(),
             inputType: "password",
             keystrokes: [
               {
-                key: "p",
+                character: "p",
                 dwellTime: 120 + Math.random() * 50,
                 flightTime: 80 + Math.random() * 40,
                 pressure: 0.7 + Math.random() * 0.2,
-                touchArea: 18 + Math.random() * 8,
-                timestamp: Date.now() - 3000,
-                isCorrection: false
+                x: 150 + Math.random() * 50,
+                y: 300 + Math.random() * 50,
+                timestamp: Date.now() - 3000
               }
             ],
-            typingSpeed: 2.5 + Math.random() * 1.5,
-            accuracy: 0.85 + Math.random() * 0.1,
-            errorRate: Math.random() * 0.1,
-            correctionSpeed: 1.2 + Math.random() * 0.8,
-            autocorrectUsed: Math.random() > 0.7,
-            predictiveTextUsed: Math.random() > 0.6,
-            longPauseCount: Math.floor(Math.random() * 3)
+            avgDwellTime: 120 + Math.random() * 50,
+             avgFlightTime: 80 + Math.random() * 40,
+             timingConsistency: 0.8 + Math.random() * 0.2,
+             typingSpeed: 2.5 + Math.random() * 1.5,
+             avgPressure: 0.7 + Math.random() * 0.2,
+             pressureVariation: 0.1 + Math.random() * 0.1,
+             touchAccuracy: 0.9 + Math.random() * 0.1,
+             errorRate: Math.random() * 0.1,
+             correctionSpeed: 1.2 + Math.random() * 0.8,
+             autocorrectUsage: Math.random(),
+             predictiveTextUsage: Math.random(),
+             longPauseCount: Math.floor(Math.random() * 3),
+             duration: 1000 + Math.random() * 2000,
+             characterCount: 1,
+             timestamp: Date.now()
           }
         ],
         loginBehavior: {
-          loginTime: Date.now(),
+          timestamp: Date.now(),
+          timeOfDay: new Date().getHours(),
+          dayOfWeek: new Date().getDay(),
+          dayOfMonth: new Date().getDate(),
+          weekOfYear: Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 1).getTime()) / (7 * 24 * 60 * 60 * 1000)),
+          loginFrequency: 2 + Math.random() * 3,
           sessionDuration: 300 + Math.random() * 600,
           sessionDepth: 5 + Math.floor(Math.random() * 10),
-          authMethod: Math.random() > 0.5 ? "biometric" : "password",
+          sessionIdleTime: Math.random() * 60,
+          loginFlow: Math.random() > 0.5 ? "biometric" : "pin",
           authAttempts: 1 + Math.floor(Math.random() * 2),
-          authSuccess: Math.random() > 0.1,
+          authFailures: Math.floor(Math.random() * 1),
           fallbackUsed: Math.random() > 0.8,
+          biometricOutcome: Math.random() > 0.05 ? "success" : "failure",
           biometricType: "fingerprint",
-          biometricSuccess: Math.random() > 0.05,
-          idleTime: Math.random() * 60
+          hardwareAttestation: Math.random() > 0.5
         },
-        locationBehavior: {
-          coordinates: {
-            latitude: 40.7128 + (Math.random() - 0.5) * 0.1,
-            longitude: -74.0060 + (Math.random() - 0.5) * 0.1,
-            accuracy: 5 + Math.random() * 15
-          },
-          city: "New York",
-          country: "USA",
-          isVpnUsed: Math.random() > 0.9,
-          travelDistance: Math.random() * 50,
-          isHighRiskLocation: Math.random() > 0.95,
-          locationSpoofingDetected: Math.random() > 0.98
-        },
-        networkBehavior: {
-          networkType: Math.random() > 0.7 ? "wifi" : "cellular",
-          networkName: "Home_WiFi_" + Math.floor(Math.random() * 100),
-          bandwidth: 50 + Math.random() * 100,
-          latency: 20 + Math.random() * 80,
-          packetLoss: Math.random() * 0.05,
-          isPublicNetwork: Math.random() > 0.8,
-          isVpnUsed: Math.random() > 0.9,
-          isSecureConnection: Math.random() > 0.1
-        },
-        deviceBehavior: {
-          deviceId: `device_${Math.random().toString(36).substr(2, 9)}`,
-          deviceModel: "iPhone 14",
-          osVersion: "iOS 17.1",
-          appVersion: "1.2.3",
-          batteryLevel: 20 + Math.random() * 80,
-          isCharging: Math.random() > 0.7,
-          orientation: Math.random() > 0.8 ? "landscape" : "portrait",
-          screenBrightness: 0.3 + Math.random() * 0.7,
-          appUsagePatterns: {
-            "Banking": 1800 + Math.random() * 600,
-            "Social": 3600 + Math.random() * 1800
-          },
-          deviceMotion: {
-            accelerometer: {
-              x: (Math.random() - 0.5) * 2,
-              y: (Math.random() - 0.5) * 2,
-              z: (Math.random() - 0.5) * 2
-            },
-            gyroscope: {
-              x: (Math.random() - 0.5) * 0.5,
-              y: (Math.random() - 0.5) * 0.5,
-              z: (Math.random() - 0.5) * 0.5
-            },
-            magnetometer: {
-              x: (Math.random() - 0.5) * 100,
-              y: (Math.random() - 0.5) * 100,
-              z: (Math.random() - 0.5) * 100
-            }
-          },
-          isRooted: Math.random() > 0.95,
-          isDebuggingEnabled: Math.random() > 0.98,
-          hasUnknownApps: Math.random() > 0.9,
-          screenRecordingDetected: Math.random() > 0.99,
-          keyloggerDetected: Math.random() > 0.99
-        }
+        motionPattern: [
+           {
+             sampleRateHz: 50,
+             duration: 1000 + Math.random() * 2000,
+             samples: [
+               {
+                  timestamp: Date.now() - 1000,
+                  accelerometer: {
+                    x: (Math.random() - 0.5) * 2,
+                    y: (Math.random() - 0.5) * 2,
+                    z: (Math.random() - 0.5) * 2
+                  },
+                  gyroscope: {
+                    x: (Math.random() - 0.5) * 0.5,
+                    y: (Math.random() - 0.5) * 0.5,
+                    z: (Math.random() - 0.5) * 0.5
+                  },
+                  magnetometer: {
+                    x: (Math.random() - 0.5) * 0.1,
+                    y: (Math.random() - 0.5) * 0.1,
+                    z: (Math.random() - 0.5) * 0.1
+                  }
+                }
+             ]
+           }
+         ]
       };
 
       const newSession = await addBehavioralSession(sampleSession);
@@ -271,7 +257,7 @@ export default function SessionsPage() {
                         </div>
                         <div className="flex items-center gap-2">
                           <Wifi className="h-4 w-4 text-purple-500" />
-                          <span>Network: {session.networkBehavior?.networkType || 'N/A'}</span>
+                          <span>Network: N/A</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Clock className="h-4 w-4 text-orange-500" />
@@ -280,20 +266,16 @@ export default function SessionsPage() {
                       </div>
                       
                       <div className="flex gap-2 text-xs">
-                        <span className={`px-2 py-1 rounded ${
-                          session.deviceBehavior?.isRooted ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
-                        }`}>
-                          {session.deviceBehavior?.isRooted ? 'Rooted Device' : 'Secure Device'}
+                        <span className="px-2 py-1 rounded bg-gray-100 text-gray-800">
+                          Device Status: Unknown
+                        </span>
+                        <span className="px-2 py-1 rounded bg-gray-100 text-gray-800">
+                          Connection: Unknown
                         </span>
                         <span className={`px-2 py-1 rounded ${
-                          session.locationBehavior?.isVpnUsed ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800'
+                          (session.loginBehavior?.authFailures || 0) === 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                         }`}>
-                          {session.locationBehavior?.isVpnUsed ? 'VPN Used' : 'Direct Connection'}
-                        </span>
-                        <span className={`px-2 py-1 rounded ${
-                          session.loginBehavior?.authSuccess ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                        }`}>
-                          {session.loginBehavior?.authSuccess ? 'Auth Success' : 'Auth Failed'}
+                          {(session.loginBehavior?.authFailures || 0) === 0 ? 'Auth Success' : 'Auth Failed'}
                         </span>
                       </div>
                     </div>
